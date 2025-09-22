@@ -3,6 +3,22 @@
 version: '3.8'
 
 services:
+  
+  # Service to provide a PostgreSQL database for data persistence
+  postgres-db:
+    image:  postgres:13-trixie
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pwd12345
+      POSTGRES_DB: greeting
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
   modern-web-app-dev:
     build:
       context: .
@@ -30,3 +46,13 @@ services:
     # Keep container running for interactive development
     stdin_open: true
     tty: true
+    depends_on:
+      - postgres-db
+    networks:
+      - app-network  
+
+volumes:
+  postgres-data:
+
+networks:
+  app-network:
