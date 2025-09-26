@@ -21,9 +21,13 @@ class Greeting() {
     //Define cuando se realizó el saludo
     var timestamp: LocalDateTime = LocalDateTime.now()
 
+    //Mensaje  "hello + nombre del que saluda"
+    var message: String = ""
+
     //Genera un saludo con nombre y timeStamp temporal
     constructor(name: String, timestamp: LocalDateTime = LocalDateTime.now()) : this() {
         this.name = name
         this.timestamp = timestamp
+        this.message = "Hello, $name!"
     }
 }
