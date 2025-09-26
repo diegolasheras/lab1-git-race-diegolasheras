@@ -13,7 +13,7 @@
 </head>
 <body class="bg-light">
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container">
+        <div class="container"> 
             <a class="navbar-brand" href="/">
                 <img src="/assets/logo.svg" alt="Universidad Zaragoza Logo" class="me-2 navbar-logo">
                 Modern Web App
@@ -21,6 +21,7 @@
             <div class="navbar-nav ms-auto">
                 <a class="nav-link" href="/actuator/health" target="_blank">Health</a>
                 <a class="nav-link" href="/api/hello">API</a>
+                <a class="nav-link" href="/stats">Stats</a> 
             </div>
         </div>
     </nav>
@@ -76,6 +77,19 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="col-md-4">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <h6 class="card-title">API Endpoints</h6>
+                                                        <p class="small text-muted">Save Greeting</p>
+                                                        <div class="mb-3">
+                                                            <input type="text" id="greetingName" class="form-control" placeholder="Enter name">
+                                                        </div>
+                                                        <button id="saveGreetingBtn" class="btn btn-success w-100">Save Greeting</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
                                             <div class="col-md-4">
                                                 <div class="card">
                                                     <div class="card-body">
@@ -160,5 +174,25 @@
             document.head.appendChild(script);
         })();
     </script>
+
+
+    <script>
+    document.getElementById("saveGreetingBtn").addEventListener("click", function() {
+        const name = document.getElementById("greetingName").value;
+        if (!name) return alert("Escribe un nombre");
+    
+        fetch(`/api/greeting/save?name=${encodeURIComponent(name)}`)
+            .then(response => response.json())
+            .then(data => {
+                alert(`${data.message} (guardado a las ${data.timestamp})`);
+                console.log("Respuesta del servidor:", data);
+            })
+            .catch(error => console.error("Error:", error));
+    });
+    </script>
+    
+
+
+
 </body>
 </html>
