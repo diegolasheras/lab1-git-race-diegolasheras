@@ -27,8 +27,10 @@ dependencies {
     implementation(libs.bootstrap)
     implementation(libs.jackson.module.kotlin)
     testImplementation(libs.spring.boot.starter.test)
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation ("org.postgresql:postgresql:42.7.3")
+    testRuntimeOnly("com.h2database:h2") // H2 en tests
 }
 
 tasks.withType<Test> {
