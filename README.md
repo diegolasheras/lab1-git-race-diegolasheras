@@ -7,6 +7,7 @@ A modern Spring Boot application built with Kotlin, featuring a responsive web i
 - **Modern Tech Stack**: Spring Boot 3.5.3, Kotlin 2.2.10, Java 21 LTS
 - **Responsive UI**: Bootstrap 5.3.3 with modern design
 - **REST API**: JSON endpoints with timestamp support
+- **Statistics Dashboard**: Interactive chart showing greeting frequency per user (Chart.js)
 - **Health Monitoring**: Spring Boot Actuator for application health
 - **Live Development**: Spring Boot DevTools for automatic reload
 - **Interactive HTTP Debugging**: Client-side HTTP request/response visualization
@@ -23,12 +24,13 @@ A modern Spring Boot application built with Kotlin, featuring a responsive web i
 - **Build Tool**: Gradle 9.0.0
 - **Testing**: JUnit 5, AssertJ, MockMvc
 - **Containerization**: Docker
+- **Database**: PostgreSQL (production), H2 in-memory (tests)
 
 ## 📋 Prerequisites
 
 - Java 21 or higher
 - Gradle 9.0.0 or higher
-- Docker (optional)
+- Docker and Docker Compose
 
 ## 🏃‍♂️ Quick Start
 
@@ -40,21 +42,15 @@ A modern Spring Boot application built with Kotlin, featuring a responsive web i
    cd template-lab1-git-race
    ```
 
-2. **Build the application**
-   ```bash
-   ./gradlew build
-   ```
+2. **Run the application**
 
-3. **Run the application**
-   ```bash
-   ./gradlew bootRun
-   ```
+   docker-compose -f docker-compose.dev.yml up --build -d
 
 4. **Access the application**
    - Web Interface: http://localhost:8080
    - API Endpoint: http://localhost:8080/api/hello
    - Health Check: http://localhost:8080/actuator/health
-
+   - stats : http://localhost:8080/stats
 ### Using Docker for Development
 
 1. **Using Docker Compose** (Recommended):
@@ -85,6 +81,8 @@ Run specific test classes:
 ```bash
 ./gradlew test --tests "HelloControllerUnitTests"
 ./gradlew test --tests "IntegrationTest"
+./gradlew test --tests "GreetingControllerIntegrationTest"
+./gradlew test --tests "GreetingControllerUnitTest"
 ```
 
 ## 📡 API Endpoints
@@ -92,15 +90,19 @@ Run specific test classes:
 ### Web Endpoints
 - `GET /` - Main web page with interactive HTTP debugging tools
 - `GET /?name={name}` - Personalized greeting page
+- `GET /stats` - Statistics dashboard showing greeting frequency per user 
 
 ### REST API Endpoints
 - `GET /api/hello` - Returns JSON greeting with timestamp
 - `GET /api/hello?name={name}` - Returns personalized JSON greeting
 
+
 ### Monitoring Endpoints
 - `GET /actuator/health` - Application health status
 - `GET /actuator/info` - Application information
 - `GET /actuator/metrics` - Application metrics
+- `GET /api/greeting/save?name={name}` - Saves a greeting and returns JSON with message and timestamp
+- `GET /api/greeting/history` - Returns a list of all saved greetings
 
 ### Interactive HTTP Debugging
 - **Web Page Testing**: Test the main page with personalized greetings
@@ -116,7 +118,12 @@ src/
 │   ├── kotlin/
 │   │   ├── controller/
 │   │   │   └── HelloController.kt      # Web and API controllers
-│   │   └── HelloWorld.kt               # Main application class
+│   │   ├── entity/
+│   │   │   └── Greeting.kt      # Web and API controllers
+│   │   ├── repository/
+│   │   │   └── GreetingRepository.kt      # Web and API controllers
+│   │   ├── service/
+│   │   │   └── GreetingService.kt      # Web and API controllers
 │   └── resources/
 │       ├── application.properties      # Application configuration
 │       ├── templates/
@@ -129,6 +136,8 @@ src/
         ├── controller/
         │   ├── HelloControllerUnitTests.kt    # Unit tests
         │   └── HelloControllerMVCTests.kt     # MVC tests
+        │   ├── GreetingControllerIntegrationTest.kt    
+        │   └── GreetingControllerUnitTest.kt
         └── IntegrationTest.kt                 # Integration tests
 ```
 
@@ -208,3 +217,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - ✅ Fixed Bootstrap version inconsistencies
 - ✅ Enhanced error handling and validation
 - ✅ Added interactive features and API endpoints
+- ✅ Introduced greeting persistence and a statistics dashboard (Chart.js)
